@@ -32,7 +32,7 @@
     <TextView
         android:id="@+id/textView2"
         android:layout_width="116dp"
-        android:layout_height="159dp"
+        android:layout_height="177dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:background="@android:color/background_dark" />
@@ -42,9 +42,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="158dp"
-        android:layout_marginStart="158dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="177dp"
         app:srcCompat="@drawable/sprite1" />
 
     <ImageView
