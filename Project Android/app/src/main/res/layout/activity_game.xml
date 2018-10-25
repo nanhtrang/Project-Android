@@ -1,9 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/game_background"
     tools:context=".GameActivity">
 
-</RelativeLayout>
+    <TextView
+        android:id="@+id/wall1"
+        android:layout_width="100dp"
+        android:layout_height="200dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:background="@android:color/black"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="371dp" />
+
+    <TextView
+        android:id="@+id/wall2"
+        android:layout_width="100dp"
+        android:layout_height="200dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/wall1"
+        android:background="@android:color/black"
+        tools:layout_editor_absoluteX="285dp"
+        tools:layout_editor_absoluteY="371dp" />
+
+    <ImageView
+        android:id="@+id/hero"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/wall1"
+        android:layout_alignParentStart="true"
+        app:srcCompat="@drawable/herostand"
+        tools:layout_editor_absoluteX="48dp"
+        tools:layout_editor_absoluteY="326dp" />
+
+    <TextView
+        android:id="@+id/stick"
+        android:layout_width="6dp"
+        android:layout_height="100dp"
+        android:layout_above="@+id/wall1"
+        android:layout_alignEnd="@+id/wall1"
+        android:background="@android:color/black"
+        tools:layout_editor_absoluteX="94dp"
+        tools:layout_editor_absoluteY="271dp" />
+</android.support.constraint.ConstraintLayout>

@@ -1,5 +1,6 @@
 package fu.projectandroid.projectandroid;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -37,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void ImgPlay_Click(View view) {
         // sang man hinh chinh cua tro choi
+        Intent intent = new Intent(this,GameActivity.class);
+        this.startActivity(intent);
     }
 
     //ham tao thread
