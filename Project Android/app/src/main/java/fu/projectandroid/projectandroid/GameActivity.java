@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class GameActivity extends AppCompatActivity {
 
@@ -26,13 +27,13 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void setWall1Location(){
-        wall2.setX(150);
+        wall2.setX(200);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN){
-
+            Toast.makeText(this, String.valueOf(stick.getHeight()), Toast.LENGTH_SHORT ).show();
         }
         return super.onTouchEvent(event);
     }
