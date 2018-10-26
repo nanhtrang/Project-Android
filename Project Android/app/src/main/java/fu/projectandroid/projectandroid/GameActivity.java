@@ -22,6 +22,9 @@ public class GameActivity extends AppCompatActivity {
     private Handler stickHightUpHandler;
     private boolean isTouching = false;
 
+    private Thread stickDumpThread;
+    private Handler stickDumpHandler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +50,7 @@ public class GameActivity extends AppCompatActivity {
             stickHightUp();
         } else if (event.getAction() == MotionEvent.ACTION_UP) {
             isTouching = false;
+            stickDump();
         }
         return super.onTouchEvent(event);
     }
@@ -74,6 +78,32 @@ public class GameActivity extends AppCompatActivity {
             }
         });
         stickHightUpThread.start();
+    }
+
+    public void stickDump(){
+        stickDumpHandler = new Handler();
+        stickDumpThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (stick.getRotation() < 88){
+                    stickDumpHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            stick.setRotation(stick.getRotation() + 1);
+                            stick.setX(stick.getX()+3);
+                            stick.setY(stick.getY()+4);
+                        }
+                    });
+                    try {
+                        Thread.sleep(5);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        stickDumpThread.start();
+
     }
 
 }
