@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/gameCanvas"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/game_background"
+    tools:context=".Game2Activity">
+
+    <TextView
+        android:id="@+id/ground"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:background="@android:color/black"
+        android:text="TextView" />
+
+    <ImageView
+        android:id="@+id/hero"
+        android:layout_width="65dp"
+        android:layout_height="66dp"
+        android:layout_above="@+id/ground"
+        android:layout_centerHorizontal="true"
+        app:srcCompat="@drawable/herostand" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="115dp"
+        android:layout_height="62dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        app:srcCompat="@drawable/no" />
+
+    <TextView
+        android:id="@+id/arrow"
+        android:layout_width="8dp"
+        android:layout_height="74dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="@android:color/black" />
+
+    <TextView
+        android:id="@+id/score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/imageView5"
+        android:text="TextView"
+        android:textColor="@android:color/white"
+        android:textSize="30sp" />
+
+</RelativeLayout>

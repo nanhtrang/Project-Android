@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void ImgPlay_Click(View view) {
         // sang man hinh chinh cua tro choi
-        Intent intent = new Intent(this,GameActivity.class);
+        Intent intent = new Intent(this,Game2Activity.class);
         this.startActivity(intent);
     }
 

@@ -31,19 +31,18 @@
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="116dp"
-        android:layout_height="177dp"
+        android:layout_width="115dp"
+        android:layout_height="205dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:background="@android:color/background_dark" />
 
     <ImageView
         android:id="@+id/heroStand_Main"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_width="64dp"
+        android:layout_height="58dp"
+        android:layout_above="@+id/textView2"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="177dp"
         app:srcCompat="@drawable/sprite1" />
 
     <ImageView
