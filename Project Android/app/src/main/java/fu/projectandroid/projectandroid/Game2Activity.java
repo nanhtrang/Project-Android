@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -31,20 +32,49 @@ public class Game2Activity extends AppCompatActivity {
     private boolean hit;
 
 
+    //boom
+    private ImageView boom;
+    private Thread boomThread;
+    private Handler boomHandler;
+    private int checkBoom;
+
+    //mainThread
+    private Thread mainThread;
+    private Handler mainHandler;
+    private boolean isRunning;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game2);
         hero = findViewById(R.id.hero);
         arrow = findViewById(R.id.arrow);
+        boom = findViewById(R.id.boom);
         gameCanvas = findViewById(R.id.gameCanvas);
         score = findViewById(R.id.score);
+        boom.setVisibility(View.INVISIBLE);
         scoreInt = 0;
         score.setText(String.valueOf(scoreInt));
         leftToRight = true;
         changePicFlag = true;
         shooted = true;
         move();
+    }
+
+    public void initMainThread(){
+        isRunning = true;
+        mainHandler = new Handler();
+        mainThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (isRunning){
+                    if (isHit()){
+
+                    }
+                }
+            }
+        });
     }
 
     public void move() {
@@ -65,7 +95,7 @@ public class Game2Activity extends AppCompatActivity {
                                     hero.setImageResource(R.drawable.herostand);
                                     changePicFlag = true;
                                 }
-                                hero.setX(hero.getX() + 5);
+                                hero.setX(hero.getX() + 5 + (scoreInt - (scoreInt-3)));
                                 kickWall = gameCanvas.getWidth() - hero.getWidth();
                                 if (hero.getX() > kickWall) {
                                     leftToRight = false;
@@ -78,7 +108,7 @@ public class Game2Activity extends AppCompatActivity {
                                     hero.setImageResource(R.drawable.herostand1);
                                     changePicFlag = false;
                                 }
-                                hero.setX(hero.getX() - 5);
+                                hero.setX(hero.getX() - 5 - (scoreInt - (scoreInt-3)));
                                 kickWall = 0;
                                 if (hero.getX() < kickWall) {
                                     leftToRight = true;
@@ -101,7 +131,7 @@ public class Game2Activity extends AppCompatActivity {
         shooted = false;
         gravity = 1;
         gravitySpeed = 0;
-        hit= false;
+        hit = false;
         shootHandler = new Handler();
         shootThread = new Thread(new Runnable() {
             @Override
@@ -116,12 +146,13 @@ public class Game2Activity extends AppCompatActivity {
                                 arrow.setY(0);
                                 shooted = true;
                             }
-                            if (isHit()){
+                            if (isHit()) {
                                 scoreInt++;
                                 score.setText(String.valueOf(scoreInt));
                                 arrow.setY(0);
                                 shooted = true;
-                                hit =  true;
+                                hit = true;
+                                boomBoom();
                             }
                         }
                     });
@@ -146,8 +177,7 @@ public class Game2Activity extends AppCompatActivity {
         return super.onTouchEvent(event);
     }
 
-    public void boom(){
-        
+    public void boom() {
     }
 
     public boolean isHit() {
@@ -160,15 +190,85 @@ public class Game2Activity extends AppCompatActivity {
         y3 = hero.getY();
         y2 = arrow.getY() + arrow.getWidth();
         if (y3 < y2) {
-            if (x2< x3){
+            if (x2 < x3) {
                 return false;
             }
-            if (x1>x4){
+            if (x1 > x4) {
                 return false;
             }
-        }else{
+        } else {
             return false;
         }
         return true;
+    }
+
+    private void boomBoom() {
+        boomHandler = new Handler();
+        boomThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                checkBoom = 0;
+                while (checkBoom != 11) {
+                    boomHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (checkBoom == 0) {
+                                boom.setX(arrow.getX());
+                                boom.setY(hero.getY());
+                                boom.setVisibility(View.VISIBLE);
+                                boom.setImageResource(R.drawable.boom1);
+                            }
+                            checkBoom = checkBoom + 1;
+                            switch (checkBoom) {
+                                case 1:
+                                    boom.setImageResource(R.drawable.boom1);
+                                    break;
+                                case 2:
+                                    boom.setImageResource(R.drawable.boom2);
+                                    break;
+                                case 3:
+                                    boom.setImageResource(R.drawable.boom3);
+                                    break;
+                                case 4:
+                                    boom.setImageResource(R.drawable.boom4);
+                                    break;
+                                case 5:
+                                    boom.setImageResource(R.drawable.boom5);
+                                    break;
+                                case 6:
+                                    boom.setImageResource(R.drawable.boom6);
+                                    break;
+                                case 7:
+                                    boom.setImageResource(R.drawable.boom7);
+                                    break;
+                                case 8:
+                                    boom.setImageResource(R.drawable.boom8);
+                                    break;
+                                case 9:
+                                    boom.setImageResource(R.drawable.boom9);
+                                    break;
+                                case 10:
+                                    boom.setImageResource(R.drawable.boom10);
+                                    break;
+                                case 11:
+                                    boom.setImageResource(R.drawable.boom11);
+                                    break;
+                            }
+                            if (checkBoom == 11) {
+                                boom.setVisibility(View.INVISIBLE);
+                            }
+                        }
+
+                    });
+                    try {
+                        Thread.sleep( 40);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        });
+        boomThread.start();
     }
 }
