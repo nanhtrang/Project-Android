@@ -48,8 +48,18 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignTop="@+id/imageView5"
+        android:layout_marginStart="23dp"
         android:text="TextView"
         android:textColor="@android:color/white"
         android:textSize="30sp" />
+
+    <ImageView
+        android:id="@+id/boom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="167dp"
+        app:srcCompat="@drawable/boom1" />
 
 </RelativeLayout>
