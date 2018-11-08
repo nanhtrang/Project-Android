@@ -62,4 +62,46 @@
         android:layout_marginBottom="167dp"
         app:srcCompat="@drawable/boom1" />
 
+    <ImageView
+        android:id="@+id/life5"
+        android:layout_width="25dp"
+        android:layout_height="32dp"
+        android:layout_alignStart="@+id/life1"
+        android:layout_below="@+id/life4"
+        app:srcCompat="@drawable/life" />
+
+    <ImageView
+        android:id="@+id/life4"
+        android:layout_width="25dp"
+        android:layout_height="32dp"
+        android:layout_alignStart="@+id/life1"
+        android:layout_below="@+id/life3"
+        app:srcCompat="@drawable/life" />
+
+    <ImageView
+        android:id="@+id/life3"
+        android:layout_width="25dp"
+        android:layout_height="32dp"
+        android:layout_alignStart="@+id/life1"
+        android:layout_below="@+id/life2"
+        app:srcCompat="@drawable/life" />
+
+    <ImageView
+        android:id="@+id/life2"
+        android:layout_width="25dp"
+        android:layout_height="32dp"
+        android:layout_alignStart="@+id/life1"
+        android:layout_below="@+id/life1"
+        app:srcCompat="@drawable/life" />
+
+    <ImageView
+        android:id="@+id/life1"
+        android:layout_width="25dp"
+        android:layout_height="32dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="18dp"
+        android:layout_marginTop="18dp"
+        app:srcCompat="@drawable/life" />
+
 </RelativeLayout>

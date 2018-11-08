@@ -1,5 +1,6 @@
 package fu.projectandroid.projectandroid;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -44,6 +45,15 @@ public class Game2Activity extends AppCompatActivity {
     private boolean isRunning;
 
 
+    //get life
+    private ImageView life1;
+    private ImageView life2;
+    private ImageView life3;
+    private ImageView life4;
+    private ImageView life5;
+    private int lifeInt;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +62,15 @@ public class Game2Activity extends AppCompatActivity {
         arrow = findViewById(R.id.arrow);
         boom = findViewById(R.id.boom);
         gameCanvas = findViewById(R.id.gameCanvas);
+        //get life
         score = findViewById(R.id.score);
+        life1 = findViewById(R.id.life1);
+        life2 = findViewById(R.id.life2);
+        life3 = findViewById(R.id.life3);
+        life4 = findViewById(R.id.life4);
+        life5 = findViewById(R.id.life5);
+        lifeInt = 5;
+        //set boom location
         boom.setVisibility(View.INVISIBLE);
         scoreInt = 0;
         score.setText(String.valueOf(scoreInt));
@@ -62,14 +80,14 @@ public class Game2Activity extends AppCompatActivity {
         move();
     }
 
-    public void initMainThread(){
+    public void initMainThread() {
         isRunning = true;
         mainHandler = new Handler();
         mainThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                while (isRunning){
-                    if (isHit()){
+                while (isRunning) {
+                    if (isHit()) {
 
                     }
                 }
@@ -95,7 +113,7 @@ public class Game2Activity extends AppCompatActivity {
                                     hero.setImageResource(R.drawable.herostand);
                                     changePicFlag = true;
                                 }
-                                hero.setX(hero.getX() + 5 + (scoreInt - (scoreInt-3)));
+                                hero.setX(hero.getX() + 5 + (scoreInt - (scoreInt - 3)));
                                 kickWall = gameCanvas.getWidth() - hero.getWidth();
                                 if (hero.getX() > kickWall) {
                                     leftToRight = false;
@@ -108,7 +126,7 @@ public class Game2Activity extends AppCompatActivity {
                                     hero.setImageResource(R.drawable.herostand1);
                                     changePicFlag = false;
                                 }
-                                hero.setX(hero.getX() - 5 - (scoreInt - (scoreInt-3)));
+                                hero.setX(hero.getX() - 5 - (scoreInt - (scoreInt - 3)));
                                 kickWall = 0;
                                 if (hero.getX() < kickWall) {
                                     leftToRight = true;
@@ -143,6 +161,31 @@ public class Game2Activity extends AppCompatActivity {
                             gravitySpeed += gravity;
                             arrow.setY(arrow.getY() + gravitySpeed);
                             if (arrow.getY() > gameCanvas.getHeight()) {
+                                if (hit == false) {
+                                    switch (lifeInt) {
+                                        case 5:
+                                            life5.setVisibility(View.INVISIBLE);
+                                            lifeInt--;
+                                            break;
+                                        case 4:
+                                            life4.setVisibility(View.INVISIBLE);
+                                            lifeInt--;
+                                            break;
+                                        case 3:
+                                            life3.setVisibility(View.INVISIBLE);
+                                            lifeInt--;
+                                            break;
+                                        case 2:
+                                            life2.setVisibility(View.INVISIBLE);
+                                            lifeInt--;
+                                            break;
+                                        case 1:
+                                            //get score
+                                            gameOver();
+                                            finish();
+                                            break;
+                                    }
+                                }
                                 arrow.setY(0);
                                 shooted = true;
                             }
@@ -154,6 +197,7 @@ public class Game2Activity extends AppCompatActivity {
                                 hit = true;
                                 boomBoom();
                             }
+                            //check fire fail
                         }
                     });
                     try {
@@ -261,7 +305,7 @@ public class Game2Activity extends AppCompatActivity {
 
                     });
                     try {
-                        Thread.sleep( 40);
+                        Thread.sleep(40);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -270,5 +314,12 @@ public class Game2Activity extends AppCompatActivity {
             }
         });
         boomThread.start();
+    }
+
+
+    public void gameOver(){
+        Intent intent = new Intent(this, EndActivity.class);
+        intent.putExtra("score", scoreInt);
+        startActivity(intent);
     }
 }

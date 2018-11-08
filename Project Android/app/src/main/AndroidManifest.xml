@@ -22,7 +22,8 @@
             android:resource="@array/preloaded_fonts" />
 
         <activity android:name=".GameActivity" />
-        <activity android:name=".Game2Activity"></activity>
+        <activity android:name=".Game2Activity" />
+        <activity android:name=".EndActivity"></activity>
     </application>
 
 </manifest>
