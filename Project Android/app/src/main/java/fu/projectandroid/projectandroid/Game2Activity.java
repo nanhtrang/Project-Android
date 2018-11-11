@@ -1,6 +1,7 @@
 package fu.projectandroid.projectandroid;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +10,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import java.util.Random;
 
 public class Game2Activity extends AppCompatActivity {
 
@@ -54,6 +57,30 @@ public class Game2Activity extends AppCompatActivity {
     private int lifeInt;
 
 
+    //random
+    private Thread t1;
+    private Thread t2;
+    private Handler h1;
+    private Handler h2;
+    private int num1;
+    private int num2;
+
+    //sound
+    private MediaPlayer song;
+    private Thread soundBoomThread;
+    private Handler soundBoomHandler;
+    private boolean isBoom;
+
+    //sound background
+    private MediaPlayer bgSong;
+    private Thread bgSoundThread;
+    private Handler bgSoundHandler;
+
+    //life out sound
+    private MediaPlayer lifeOutSound;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +90,9 @@ public class Game2Activity extends AppCompatActivity {
         boom = findViewById(R.id.boom);
         gameCanvas = findViewById(R.id.gameCanvas);
         //get life
+        lifeOutSound = MediaPlayer.create(this,R.raw.gameover);
+        isRunning = true;
+        isBoom = false ;
         score = findViewById(R.id.score);
         life1 = findViewById(R.id.life1);
         life2 = findViewById(R.id.life2);
@@ -77,22 +107,84 @@ public class Game2Activity extends AppCompatActivity {
         leftToRight = true;
         changePicFlag = true;
         shooted = true;
+        soundBackground();
+        initMainThread();
+        sayBoom ();
         move();
     }
 
-    public void initMainThread() {
-        isRunning = true;
-        mainHandler = new Handler();
-        mainThread = new Thread(new Runnable() {
+    public void soundBackground(){
+        bgSoundHandler = new Handler();
+        bgSoundThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                while (isRunning) {
-                    if (isHit()) {
-
+                while (isRunning){
+                    mediaBackground();
+                    try {
+                        Thread.sleep(30000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    if(isRunning==false){
+                        bgSong.stop();
                     }
                 }
             }
         });
+        bgSoundThread.start();
+    }
+    public void mediaBackground(){
+        bgSong = MediaPlayer.create(this, R.raw.bg1_sound);
+        bgSong.start();
+    }
+
+    public void initMainThread() {
+        h1 = new Handler();
+        h2 = new Handler();
+        t1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true){
+                    h1.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Random r = new Random();
+                            num1 = r.nextInt(250);
+                        }
+                    });
+                    try {
+                        Random r2 = new Random();
+                        int time = 2000 + r2.nextInt(2500);
+                        Thread.sleep(time);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        t1.start();
+        t2 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true){
+                    h2.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Random r = new Random();
+                            num2 = r.nextInt(250);
+                        }
+                    });
+                    try {
+                        Random r2 = new Random();
+                        int time = 2000 + r2.nextInt(2500);
+                        Thread.sleep(time);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        t2.start();
     }
 
     public void move() {
@@ -114,8 +206,9 @@ public class Game2Activity extends AppCompatActivity {
                                     changePicFlag = true;
                                 }
                                 hero.setX(hero.getX() + 5 + (scoreInt - (scoreInt - 3)));
+
                                 kickWall = gameCanvas.getWidth() - hero.getWidth();
-                                if (hero.getX() > kickWall) {
+                                if (hero.getX() > kickWall - num1) {
                                     leftToRight = false;
                                 }
                             } else {
@@ -128,7 +221,7 @@ public class Game2Activity extends AppCompatActivity {
                                 }
                                 hero.setX(hero.getX() - 5 - (scoreInt - (scoreInt - 3)));
                                 kickWall = 0;
-                                if (hero.getX() < kickWall) {
+                                if (hero.getX() < kickWall + num1) {
                                     leftToRight = true;
                                 }
                             }
@@ -155,7 +248,7 @@ public class Game2Activity extends AppCompatActivity {
             @Override
             public void run() {
                 while (shooted == false) {
-                    shootHandler.post(new Runnable() {
+                    boolean post = shootHandler.post(new Runnable() {
                         @Override
                         public void run() {
                             gravitySpeed += gravity;
@@ -185,17 +278,20 @@ public class Game2Activity extends AppCompatActivity {
                                             finish();
                                             break;
                                     }
+                                    lifeOutSound.start();
                                 }
                                 arrow.setY(0);
                                 shooted = true;
                             }
                             if (isHit()) {
+                                isBoom = true;
                                 scoreInt++;
                                 score.setText(String.valueOf(scoreInt));
                                 arrow.setY(0);
                                 shooted = true;
                                 hit = true;
                                 boomBoom();
+
                             }
                             //check fire fail
                         }
@@ -305,7 +401,7 @@ public class Game2Activity extends AppCompatActivity {
 
                     });
                     try {
-                        Thread.sleep(40);
+                        Thread.sleep(100);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -317,9 +413,32 @@ public class Game2Activity extends AppCompatActivity {
     }
 
 
-    public void gameOver(){
+    public void gameOver() {
+        isRunning = false;
         Intent intent = new Intent(this, EndActivity.class);
         intent.putExtra("score", scoreInt);
         startActivity(intent);
+
     }
+    public void sayBoom () {
+        soundBoomHandler = new Handler();
+        soundBoomThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    if (isBoom) {
+                        mediaBoom();
+                        isBoom = false;
+                    }
+                }
+            }
+        });
+        soundBoomThread.start();
+    }
+
+    public void mediaBoom(){
+        song = MediaPlayer.create(this, R.raw.boom);
+        song.start();
+    }
+
 }

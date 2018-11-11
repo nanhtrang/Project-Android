@@ -45,4 +45,23 @@
         android:text="0"
         android:textColor="@android:color/black"
         android:textSize="30sp" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="56dp"
+        android:layout_height="61dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="166dp"
+        android:layout_toStartOf="@+id/txtBest"
+        android:onClick="goHome"
+        app:srcCompat="@drawable/btn_home" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="56dp"
+        android:layout_height="60dp"
+        android:layout_alignTop="@+id/imageView"
+        android:layout_toEndOf="@+id/txtBest"
+        android:onClick="goGame"
+        app:srcCompat="@drawable/btn_back" />
 </RelativeLayout>

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 public class EndActivity extends AppCompatActivity {
@@ -43,5 +44,14 @@ public class EndActivity extends AppCompatActivity {
         }
         editor.putInt("best", best);
         editor.commit();
+    }
+
+    public void goHome(View view){
+        this.finish();
+    }
+    public void goGame(View view){
+        Intent intent = new Intent(this,Game2Activity.class);
+        this.startActivity(intent);
+        this.finish();
     }
 }
