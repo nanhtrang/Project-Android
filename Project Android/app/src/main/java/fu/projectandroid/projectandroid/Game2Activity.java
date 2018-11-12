@@ -29,8 +29,8 @@ public class Game2Activity extends AppCompatActivity {
     //arrow
     private Thread shootThread;
     private Handler shootHandler;
-    private int gravity = 1;
-    private int gravitySpeed = 0;
+    private float gravity = 1f;
+    private float gravitySpeed = 0f;
     private boolean shooted;
     private boolean isShooting;
     private boolean hit;
@@ -205,7 +205,11 @@ public class Game2Activity extends AppCompatActivity {
                                     hero.setImageResource(R.drawable.herostand);
                                     changePicFlag = true;
                                 }
-                                hero.setX(hero.getX() + 5 + (scoreInt - (scoreInt - 3)));
+                                if(scoreInt <= 6){
+                                    hero.setX(hero.getX() + 5 + (float)scoreInt/2);
+                                } else{
+                                    hero.setX(hero.getX() + 8);
+                                }
 
                                 kickWall = gameCanvas.getWidth() - hero.getWidth();
                                 if (hero.getX() > kickWall - num1) {
@@ -219,7 +223,12 @@ public class Game2Activity extends AppCompatActivity {
                                     hero.setImageResource(R.drawable.herostand1);
                                     changePicFlag = false;
                                 }
-                                hero.setX(hero.getX() - 5 - (scoreInt - (scoreInt - 3)));
+                                if(scoreInt <= 6){
+                                    hero.setX(hero.getX() - 5 - (float)scoreInt/2);
+                                } else{
+                                    hero.setX(hero.getX() - 8);
+                                }
+
                                 kickWall = 0;
                                 if (hero.getX() < kickWall + num1) {
                                     leftToRight = true;
@@ -240,7 +249,7 @@ public class Game2Activity extends AppCompatActivity {
 
     public void fire() {
         shooted = false;
-        gravity = 1;
+        gravity = 1.5f;
         gravitySpeed = 0;
         hit = false;
         shootHandler = new Handler();
@@ -251,7 +260,14 @@ public class Game2Activity extends AppCompatActivity {
                     boolean post = shootHandler.post(new Runnable() {
                         @Override
                         public void run() {
-                            gravitySpeed += gravity;
+                            if(scoreInt <= 2){
+                                gravitySpeed += gravity;
+                            } else if(scoreInt <= 5){
+                                gravitySpeed = gravitySpeed + (float)scoreInt /9 * 4;
+                            } else if(scoreInt >= 6){
+                                gravitySpeed += gravity*2.2;
+                            }
+
                             arrow.setY(arrow.getY() + gravitySpeed);
                             if (arrow.getY() > gameCanvas.getHeight()) {
                                 if (hit == false) {
