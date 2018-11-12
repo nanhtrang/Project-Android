@@ -1,6 +1,7 @@
 package fu.projectandroid.projectandroid;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
     //flag sound/mute
     private boolean soundFlag;
 
+    private MediaPlayer mainSong;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,10 +36,13 @@ public class MainActivity extends AppCompatActivity {
         imgSound = findViewById(R.id.imgSound);
         soundFlag = true;
         hairFlag = true;
+        mainSong = MediaPlayer.create(this, R.raw.bg1_sound);
+        mainSong.start();
         initThread();
     }
 
     public void ImgPlay_Click(View view) {
+        mainSong.stop();
         // sang man hinh chinh cua tro choi
         Intent intent = new Intent(this,Game2Activity.class);
         this.startActivity(intent);
