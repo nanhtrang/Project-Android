@@ -249,7 +249,7 @@ public class Game2Activity extends AppCompatActivity {
 
     public void fire() {
         shooted = false;
-        gravity = 1.5f;
+        gravity = 1.2f;
         gravitySpeed = 0;
         hit = false;
         shootHandler = new Handler();
@@ -263,12 +263,21 @@ public class Game2Activity extends AppCompatActivity {
                             if(scoreInt <= 2){
                                 gravitySpeed += gravity;
                             } else if(scoreInt <= 5){
-                                gravitySpeed = gravitySpeed + (float)scoreInt /9 * 4;
+                                gravitySpeed = gravitySpeed + (float)scoreInt /3;
                             } else if(scoreInt >= 6){
-                                gravitySpeed += gravity*2.2;
+                                gravitySpeed += gravity*1.6;
                             }
 
                             arrow.setY(arrow.getY() + gravitySpeed);
+                            if (isHit()) {
+                                isBoom = true;
+                                shooted = true;
+                                hit = true;
+                                boomBoom();
+                                scoreInt++;
+                                score.setText(String.valueOf(scoreInt));
+                                arrow.setY(0);
+                            }
                             if (arrow.getY() > gameCanvas.getHeight()) {
                                 if (hit == false) {
                                     switch (lifeInt) {
@@ -299,21 +308,12 @@ public class Game2Activity extends AppCompatActivity {
                                 arrow.setY(0);
                                 shooted = true;
                             }
-                            if (isHit()) {
-                                isBoom = true;
-                                scoreInt++;
-                                score.setText(String.valueOf(scoreInt));
-                                arrow.setY(0);
-                                shooted = true;
-                                hit = true;
-                                boomBoom();
 
-                            }
                             //check fire fail
                         }
                     });
                     try {
-                        Thread.sleep(20);
+                        Thread.sleep(17);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
