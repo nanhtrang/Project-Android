@@ -45,6 +45,7 @@
         android:layout_centerHorizontal="true"
         app:srcCompat="@drawable/sprite1" />
 
+
     <ImageView
         android:id="@+id/imgSound"
         android:layout_width="45dp"
@@ -55,5 +56,4 @@
         android:layout_marginStart="16dp"
         android:onClick="ImgSound_Click"
         app:srcCompat="@drawable/sound" />
-
 </RelativeLayout>

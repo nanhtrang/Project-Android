@@ -64,4 +64,15 @@
         android:layout_toEndOf="@+id/txtBest"
         android:onClick="goGame"
         app:srcCompat="@drawable/btn_back" />
+
+    <ImageView
+        android:id="@+id/imgSound"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="22dp"
+        android:onClick="ImgSound_Click"
+        app:srcCompat="@drawable/sound" />
 </RelativeLayout>

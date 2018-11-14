@@ -1,7 +1,9 @@
 package fu.projectandroid.projectandroid;
 
 import android.content.Intent;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.Random;
 
 public class Game2Activity extends AppCompatActivity {
@@ -25,6 +28,7 @@ public class Game2Activity extends AppCompatActivity {
     private Handler runHandler;
     private boolean changePicFlag;
     private float kickWall;
+    private ImageView imgSound;
 
     //arrow
     private Thread shootThread;
@@ -72,12 +76,15 @@ public class Game2Activity extends AppCompatActivity {
     private boolean isBoom;
 
     //sound background
-    private MediaPlayer bgSong;
+    private MediaPlayer bgSong = null;
     private Thread bgSoundThread;
     private Handler bgSoundHandler;
+    private boolean soundFlag;
 
     //life out sound
     private MediaPlayer lifeOutSound;
+    int id_sound_boom;
+    SoundPool boomSound = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
 
 
 
@@ -89,6 +96,7 @@ public class Game2Activity extends AppCompatActivity {
         arrow = findViewById(R.id.arrow);
         boom = findViewById(R.id.boom);
         gameCanvas = findViewById(R.id.gameCanvas);
+        imgSound = findViewById(R.id.imgSound);
         //get life
         lifeOutSound = MediaPlayer.create(this,R.raw.gameover);
         isRunning = true;
@@ -102,14 +110,18 @@ public class Game2Activity extends AppCompatActivity {
         lifeInt = 5;
         //set boom location
         boom.setVisibility(View.INVISIBLE);
+        // set soundBoom
+        id_sound_boom = boomSound.load(this, R.raw.boom, 1);
         scoreInt = 0;
         score.setText(String.valueOf(scoreInt));
         leftToRight = true;
         changePicFlag = true;
         shooted = true;
-        soundBackground();
+        //soundBackground();
+        bgSong = MediaPlayer.create(this, R.raw.bg1_sound);
+        bgSong.start();
+        mediaBackground();
         initMainThread();
-        sayBoom ();
         move();
     }
 
@@ -133,9 +145,37 @@ public class Game2Activity extends AppCompatActivity {
         });
         bgSoundThread.start();
     }
+
     public void mediaBackground(){
-        bgSong = MediaPlayer.create(this, R.raw.bg1_sound);
-        bgSong.start();
+        Intent intent = getIntent();
+        soundFlag = (boolean) intent.getExtras().get("sound");
+        if(soundFlag == true){
+            bgSong.start();
+            bgSong.setLooping(true);
+        } else {
+            imgSound.setImageResource(R.drawable.mute);
+            bgSong.stop();
+        }
+
+    }
+
+    public void ImgSound_Click(View view) {
+        if (soundFlag) {
+            imgSound.setImageResource(R.drawable.mute);
+            bgSong.stop();
+            soundFlag = false;
+        } else {
+            imgSound.setImageResource(R.drawable.sound);
+            try {
+                //if(bgSong.isPlaying())
+                    bgSong.prepare();
+                bgSong.start();
+                bgSong.setLooping(true);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            soundFlag = true;
+        }
     }
 
     public void initMainThread() {
@@ -257,7 +297,7 @@ public class Game2Activity extends AppCompatActivity {
             @Override
             public void run() {
                 while (shooted == false) {
-                    boolean post = shootHandler.post(new Runnable() {
+                    shootHandler.post(new Runnable() {
                         @Override
                         public void run() {
                             if(scoreInt <= 2){
@@ -425,14 +465,19 @@ public class Game2Activity extends AppCompatActivity {
 
             }
         });
+        if(soundFlag){
+            boomSound.play(id_sound_boom, 1.0f, 1.0f, 1, 0, 1.0f);
+        }
         boomThread.start();
     }
 
 
     public void gameOver() {
         isRunning = false;
+        bgSong.stop();
         Intent intent = new Intent(this, EndActivity.class);
         intent.putExtra("score", scoreInt);
+        intent.putExtra("sound", soundFlag);
         startActivity(intent);
 
     }
@@ -442,7 +487,7 @@ public class Game2Activity extends AppCompatActivity {
             @Override
             public void run() {
                 while (true) {
-                    if (isBoom) {
+                    if (isHit()) {
                         mediaBoom();
                         isBoom = false;
                     }

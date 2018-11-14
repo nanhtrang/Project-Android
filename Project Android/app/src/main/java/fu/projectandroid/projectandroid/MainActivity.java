@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.IOException;
+
 //Main
 public class MainActivity extends AppCompatActivity {
 
@@ -25,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     //flag sound/mute
     private boolean soundFlag;
 
-    private MediaPlayer mainSong;
+    private MediaPlayer mainSong = new MediaPlayer();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +39,15 @@ public class MainActivity extends AppCompatActivity {
         imgSound.setVisibility(View.INVISIBLE);
         soundFlag = true;
         hairFlag = true;
+
+        String sound = getIntent().getStringExtra("sound");
+        if(sound != null){
+            if(sound.equals("off"))
+            soundFlag = false;
+        }
         mainSong = MediaPlayer.create(this, R.raw.bg1_sound);
         mainSong.start();
+        mediaBackground();
         initThread();
     }
 
@@ -46,7 +55,9 @@ public class MainActivity extends AppCompatActivity {
         mainSong.stop();
         // sang man hinh chinh cua tro choi
         Intent intent = new Intent(this,Game2Activity.class);
+        intent.putExtra("sound", soundFlag);
         this.startActivity(intent);
+        this.finish();
     }
 
     //ham tao thread
@@ -84,12 +95,31 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void mediaBackground(){
+        if(soundFlag == true){
+            mainSong.start();
+            mainSong.setLooping(true);
+        } else {
+            imgSound.setImageResource(R.drawable.mute);
+            mainSong.stop();
+        }
+
+    }
+
     public void ImgSound_Click(View view) {
         if (soundFlag) {
             imgSound.setImageResource(R.drawable.mute);
+            mainSong.stop();
             soundFlag = false;
         } else {
             imgSound.setImageResource(R.drawable.sound);
+            try {
+                mainSong.prepare();
+                mainSong.start();
+                mainSong.setLooping(true);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             soundFlag = true;
         }
     }

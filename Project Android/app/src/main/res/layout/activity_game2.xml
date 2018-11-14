@@ -46,12 +46,13 @@
         android:id="@+id/score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:layout_alignTop="@+id/imageView5"
-        android:layout_marginStart="23dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="67dp"
         android:text="TextView"
         android:textColor="@android:color/white"
-        android:textSize="30sp" />
+        android:textSize="34sp" />
 
     <ImageView
         android:id="@+id/boom"
@@ -103,5 +104,16 @@
         android:layout_marginEnd="18dp"
         android:layout_marginTop="18dp"
         app:srcCompat="@drawable/life" />
+
+    <ImageView
+        android:id="@+id/imgSound"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="22dp"
+        android:onClick="ImgSound_Click"
+        app:srcCompat="@drawable/sound" />
 
 </RelativeLayout>
