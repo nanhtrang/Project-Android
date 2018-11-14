@@ -343,7 +343,9 @@ public class Game2Activity extends AppCompatActivity {
                                             finish();
                                             break;
                                     }
-                                    lifeOutSound.start();
+                                    if(soundFlag){
+                                        lifeOutSound.start();
+                                    }
                                 }
                                 arrow.setY(0);
                                 shooted = true;

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -18,10 +19,15 @@ public class EndActivity extends AppCompatActivity {
     private TextView txtScore;
     private TextView txtBest;
     private ImageView imgSound;
+    private ImageView heroStandMain;
     private int best;
     private int scoreInt;
     private boolean soundFlag;
     private MediaPlayer bgSong = null;
+
+    private Thread hairThread;
+    private Handler hairThreadHandler;
+    private boolean hairFlag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +35,9 @@ public class EndActivity extends AppCompatActivity {
         setContentView(R.layout.activity_end);
         txtScore = findViewById(R.id.txtScore);
         txtBest = findViewById(R.id.txtBest);
+        heroStandMain = findViewById(R.id.imageView6);
         imgSound = findViewById(R.id.imgSound);
+        hairFlag = true;
         Intent intent = getIntent();
         scoreInt = (int) intent.getExtras().get("score");
         soundFlag = (boolean) intent.getExtras().get("sound");
@@ -38,6 +46,7 @@ public class EndActivity extends AppCompatActivity {
         bgSong.start();
         mediaBackground();
         setScore();
+        initThread();
     }
 
     public void mediaBackground(){
@@ -110,4 +119,38 @@ public class EndActivity extends AppCompatActivity {
         this.startActivity(intent);
         this.finish();
     }
+
+    public void initThread() {
+        hairThreadHandler = new Handler();
+        hairThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    hairThreadHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            hairFlying();
+                        }
+                    });
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        hairThread.start();
+    }
+
+    public void hairFlying() {
+        if (hairFlag) {
+            heroStandMain.setVisibility(View.INVISIBLE);
+            hairFlag = false;
+        } else {
+            heroStandMain.setVisibility(View.VISIBLE);
+            hairFlag = true;
+        }
+    }
+
 }

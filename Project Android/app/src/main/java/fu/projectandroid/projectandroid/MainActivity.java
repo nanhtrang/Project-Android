@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
         imgPlay = findViewById(R.id.imgPlay);
         heroStandMain = findViewById(R.id.heroStand_Main);
         imgSound = findViewById(R.id.imgSound);
-        imgSound.setVisibility(View.INVISIBLE);
         soundFlag = true;
         hairFlag = true;
 
